@@ -8,8 +8,7 @@ fn main() {}
 #[cfg(not(any(target_arch = "wasm32", test)))]
 fn main() {
     use ic_cdk::export::Principal;
-    use ego_example::types::*;
-    use ego_types::app::{App, AppId, Version};
+    use ego_types::app::{ AppId, Version};
     use ego_types::app_info::AppInfo;
 
     candid::export_service!();

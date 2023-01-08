@@ -5,6 +5,6 @@
         "bin_name": "ego-example",
         "config": "./configs/ego_example.json",
         "post_install_sequence": 100,
-        "no_deploy": true
+        "no_deploy": false
     }
 ]

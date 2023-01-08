@@ -1,17 +1,54 @@
 
-use ego_types::app::App;
+// ------------------
+//
+// **Here are ego dependencies, needed for ego injections**
+//
+// ------------------
+// BTreeMap
+use std::collections::BTreeMap;
 
+// ego_types
 use ego_types::registry::Registry;
 use ego_types::user::User;
+
+// ego_macros
+use ego_macros::{inject_app_info_api, inject_ego_api};
+
+// ic_cdk
+use ic_cdk_macros::*;
+use ic_cdk::caller;
+use ic_cdk::export::Principal;
+use ic_cdk::export::candid::{CandidType, Deserialize};
+use candid::candid_method;
+
+
+// injected macros
 use ego_example_mod::state::{
     app_info_get, app_info_post_upgrade, app_info_pre_upgrade, app_info_update, canister_add,
     canister_get_one, is_op, is_owner, is_user, log_add, log_list, op_add, owner_add,
-    owner_add_with_name, owner_remove, owners_set, registry_post_upgrade, registry_pre_upgrade,
+    owner_remove, owners_set, registry_post_upgrade, registry_pre_upgrade,
     user_add, user_remove, users_post_upgrade, users_pre_upgrade, users_set,
 };
 
-use ego_macros::{inject_app_info_api, inject_ego_api};
 
+// ------------------
+//
+// **Project dependencies
+//
+// ------------------
+
+// types
+use ego_example_mod::types::ExampleState;
+
+
+
+
+// ------------------
+//
+// ** injections
+//
+// ------------------
+// injection ego apis
 inject_ego_api!();
 inject_app_info_api!();
 
@@ -36,6 +73,7 @@ pub struct StableState {
 pub fn pre_upgrade() {
     log_add("enter omni_wallet pre_upgrade");
 
+    // composite StableState
     let stable_state = StableState {
         example_state: ego_example_mod::state::pre_upgrade(),
         users: Some(users_pre_upgrade()),

@@ -3,10 +3,11 @@
     "dfxPort": 8080,
     "canisters": "canisters",
     "artifacts": "artifacts",
+    "configs": "configs",
     "credentials": {
         "seedPhrase": "./credentials/internal.txt",
         "production_pem": "./credentials/production.pem",
         "production_cycles_wallet": "./credentials/production_cycles_wallet.txt"
     },
-    "cycles_install_code": "200_000_000_000"
+    "cycles_install_code": "200000000000"
 }

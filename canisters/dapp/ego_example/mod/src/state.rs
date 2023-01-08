@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use crate::types::ExampleStore;
+use crate::types::{ExampleState};
 use ego_macros::{inject_app_info, inject_ego_data};
 
 inject_ego_data!();
