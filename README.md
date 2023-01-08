@@ -1,0 +1,1 @@
+# ego-rust-template
