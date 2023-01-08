@@ -5,7 +5,7 @@
     "artifacts": "artifacts",
     "configs": "configs",
     "credentials": {
-        "seedPhrase": "./credentials/internal.txt",
+        "seedPhrase": "./credentials/seedPhrase.txt",
         "production_pem": "./credentials/production.pem",
         "production_cycles_wallet": "./credentials/production_cycles_wallet.txt"
     },
