@@ -8,7 +8,7 @@ This Template is created for EGO projects
 - dfx 0.12.1+
 - didc [download binary](https://github.com/dfinity/candid/releases), export PATH to `didc`
 
-- **!! Important !! Setup Credentials**
+- **!! Important !! Manually Setup Credentials**
 
   - Under `credentials` folder, you need to add 2 files.
     1.  `seedPhrase.txt`: 12 words mnemonic phrases, to create secp256k1 account for local test
@@ -17,6 +17,15 @@ This Template is created for EGO projects
   - Modify `ego-config`.json, change `production_cycles_wallet` to your cycles wallet.
 
 - setup project, see `ego-projects.json`,
+
+- **Lazy Setup Credentials**
+
+  ```
+  pnpm run ego:credentials
+  ```
+
+  Will generate `seedPhrase.txt` and `production.pem` for you.
+  **But!! You have to Setup manually on production!!**
 
 ## Quick Start
 
