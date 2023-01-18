@@ -13,7 +13,8 @@
         "ego:upgrade": "ego --upgrade",
         "ego:credentials": "ego --credentials",
         "ego:run": "pnpm run ego:init && pnpm run ego:clean && pnpm run ego:create && pnpm run ego:build && pnpm run ego:install",
-        "test": "jest --verbose -t"
+        "test": "jest --verbose -t",
+        "postinstall": "pnpm run ego:init"
     },
     "author": "egoDevs@github.com",
     "license": "ISC",
