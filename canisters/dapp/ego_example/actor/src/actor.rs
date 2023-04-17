@@ -1,4 +1,3 @@
-
 // ------------------
 //
 // **Here are ego dependencies, needed for ego injections**
@@ -15,21 +14,19 @@ use ego_types::user::User;
 use ego_macros::{inject_app_info_api, inject_ego_api};
 
 // ic_cdk
-use ic_cdk_macros::*;
-use ic_cdk::caller;
-use ic_cdk::export::Principal;
-use ic_cdk::export::candid::{CandidType, Deserialize};
 use candid::candid_method;
-
+use ic_cdk::caller;
+use ic_cdk::export::candid::{CandidType, Deserialize};
+use ic_cdk::export::Principal;
+use ic_cdk_macros::*;
 
 // injected macros
 use ego_example_mod::state::{
     app_info_get, app_info_post_upgrade, app_info_pre_upgrade, app_info_update, canister_add,
-    canister_get_one, is_op, is_owner, is_user, log_add, log_list, op_add, owner_add,
-    owner_remove, owners_set, registry_post_upgrade, registry_pre_upgrade,
+    canister_get_one, info_log_add, is_op, is_owner, is_user, log_list, op_add, owner_add,
+    owner_add_with_name, owner_remove, owners_set, registry_post_upgrade, registry_pre_upgrade,
     user_add, user_remove, users_post_upgrade, users_pre_upgrade, users_set,
 };
-
 
 // ------------------
 //
@@ -39,9 +36,6 @@ use ego_example_mod::state::{
 
 // types
 use ego_example_mod::types::ExampleState;
-
-
-
 
 // ------------------
 //
@@ -60,7 +54,6 @@ fn canister_init() {
     owner_add(caller);
 }
 
-
 #[derive(Clone, CandidType, Deserialize)]
 pub struct StableState {
     pub example_state: ExampleState,
@@ -71,7 +64,7 @@ pub struct StableState {
 
 #[pre_upgrade]
 pub fn pre_upgrade() {
-    log_add("enter omni_wallet pre_upgrade");
+    info_log_add("enter omni_wallet pre_upgrade");
 
     // composite StableState
     let stable_state = StableState {
@@ -86,7 +79,7 @@ pub fn pre_upgrade() {
 
 #[post_upgrade]
 pub fn post_upgrade() {
-    log_add("enter omni_wallet post_upgrade");
+    info_log_add("enter omni_wallet post_upgrade");
 
     let (state,): (StableState,) =
         ic_cdk::storage::stable_restore().expect("failed to restore stable state");
@@ -114,9 +107,8 @@ pub fn post_upgrade() {
     ego_example_mod::state::post_upgrade(state.example_state);
 }
 
-
 #[update(name = "whoAmI", guard = "owner_guard")]
 #[candid_method(update, rename = "whoAmI")]
-pub fn who_am_i() -> Principal{
+pub fn who_am_i() -> Principal {
     ic_cdk::api::caller()
 }
