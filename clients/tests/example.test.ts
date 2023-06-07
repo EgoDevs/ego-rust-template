@@ -16,7 +16,6 @@ describe('ego_example', () => {
         // get canister ID for 'ego_example', `configs/ego_example.json` is generated
         getCanisterId('ego_example')!,
       );
-
     const pid = (await exampleActor.whoAmI()).toText();
 
     expect(pid).toBe(identity().getPrincipal().toText());
