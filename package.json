@@ -20,7 +20,7 @@
         "ego:upgrade:main": "ego --upgrade --env=mainnet",
         "ego:postPatch:main": "ego --postPatch --env=mainnet",
         "ego:run:main": "pnpm run ego:clean && pnpm run ego:create:main && pnpm run ego:build && pnpm run ego:install:main",
-        "postinstall": "pnpm run ego:postPatch",
+        "postinstall": "pnpm run ego:init",
         "test": "jest --verbose -t",
         "test:main": "NODE_ENV=mainnet jest --verbose -t"
     },
