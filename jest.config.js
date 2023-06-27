@@ -1,5 +1,11 @@
 module.exports = {
-  testMatch: ['<rootDir>/clients/tests/**/*.test.{ts,tsx,js,jsx}'],
+  testMatch: [
+    '<rootDir>/clients/tests/**/*.test.{ts,tsx,js,jsx}',
+    '<rootDir>/clients/deploys/*.test.{ts,tsx,js,jsx}',
+    '<rootDir>/clients/scripts/*.test.{ts,tsx,js,jsx}',
+    '<rootDir>/clients/releases/*.test.{ts,tsx,js,jsx}',
+    '<rootDir>/clients/migrations/*.test.{ts,tsx,js,jsx}',
+  ],
   collectCoverage: false,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
