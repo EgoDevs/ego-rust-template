@@ -21,12 +21,7 @@ use ic_cdk::export::Principal;
 use ic_cdk_macros::*;
 
 // injected macros
-use ego_example_mod::state::{
-    app_info_get, app_info_post_upgrade, app_info_pre_upgrade, app_info_update, canister_add,
-    canister_get_one, info_log_add, is_op, is_owner, is_user, log_list, op_add, owner_add,
-    owner_add_with_name, owner_remove, owners_set, registry_post_upgrade, registry_pre_upgrade,
-    user_add, user_remove, users_post_upgrade, users_pre_upgrade, users_set,
-};
+use ego_example_mod::state::*;
 
 // ------------------
 //

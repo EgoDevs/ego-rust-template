@@ -10,6 +10,7 @@ fn main() {
     use ic_cdk::export::Principal;
     use ego_types::app::{ AppId, Version};
     use ego_types::app_info::AppInfo;
+    use std::collections::BTreeMap;
 
     candid::export_service!();
     std::print!("{}", __export_service());
