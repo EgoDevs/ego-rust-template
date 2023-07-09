@@ -53,7 +53,7 @@ impl Storable for BtreeValue {
 }
 
 impl BoundedStorable for BtreeValue {
-    /// 128 + 896 = 640
+    /// 128 + 896 = 1024
     const MAX_SIZE: u32 = 1024;
     const IS_FIXED_SIZE: bool = false;
 }
