@@ -6,31 +6,24 @@
 // BTreeMap
 use std::collections::BTreeMap;
 
-// ego_types
-use ego_types::registry::Registry;
-use ego_types::user::User;
-
 // ego_macros
 use ego_macros::{inject_app_info_api, inject_ego_api};
 
 // ic_cdk
 use candid::candid_method;
 use ic_cdk::caller;
-use ic_cdk::export::candid::{CandidType, Deserialize};
 use ic_cdk::export::Principal;
 use ic_cdk_macros::*;
-
-// injected macros
-use ego_example_mod::state::*;
 
 // ------------------
 //
 // **Project dependencies
 //
 // ------------------
-
+// injected macros
+use ego_example_mod::state::*;
 // types
-use ego_example_mod::types::ExampleState;
+use ego_example_mod::types::*;
 
 // ------------------
 //
@@ -49,61 +42,36 @@ fn canister_init() {
     owner_add(caller);
 }
 
-#[derive(Clone, CandidType, Deserialize)]
-pub struct StableState {
-    pub example_state: ExampleState,
-    users: Option<User>,
-    registry: Option<Registry>,
-    app_info: Option<AppInfo>,
-}
-
 #[pre_upgrade]
 pub fn pre_upgrade() {
-    info_log_add("enter omni_wallet pre_upgrade");
-
-    // composite StableState
-    let stable_state = StableState {
-        example_state: ego_example_mod::state::pre_upgrade(),
-        users: Some(users_pre_upgrade()),
-        registry: Some(registry_pre_upgrade()),
-        app_info: Some(app_info_pre_upgrade()),
-    };
-
-    ic_cdk::storage::stable_save((stable_state,)).expect("failed to save stable state");
+    ego_example_mod::state::pre_upgrade()
 }
 
 #[post_upgrade]
 pub fn post_upgrade() {
-    info_log_add("enter omni_wallet post_upgrade");
-
-    let (state,): (StableState,) =
-        ic_cdk::storage::stable_restore().expect("failed to restore stable state");
-
-    match state.users {
-        None => {}
-        Some(users) => {
-            users_post_upgrade(users);
-        }
-    }
-
-    match state.registry {
-        None => {}
-        Some(registry) => {
-            registry_post_upgrade(registry);
-        }
-    }
-
-    match state.app_info {
-        None => {}
-        Some(app_info) => {
-            app_info_post_upgrade(app_info);
-        }
-    }
-    ego_example_mod::state::post_upgrade(state.example_state);
+    ego_example_mod::state::post_upgrade();
 }
 
 #[update(name = "whoAmI", guard = "owner_guard")]
 #[candid_method(update, rename = "whoAmI")]
 pub fn who_am_i() -> Principal {
     ic_cdk::api::caller()
+}
+
+#[update(name = "insert_btree", guard = "owner_guard")]
+#[candid_method(update, rename = "insert_btree")]
+pub fn insert_btree(key: String, value: BtreeValue) {
+    ego_example_mod::memory::insert_btree(key, value)
+}
+
+#[query(name = "get_btree", guard = "owner_guard")]
+#[candid_method(query, rename = "get_btree")]
+pub fn get_btree(key: String) -> Option<BtreeValue> {
+    ego_example_mod::memory::get_btree(key)
+}
+
+#[query(name = "get_all_btree", guard = "owner_guard")]
+#[candid_method(query, rename = "get_all_btree")]
+pub fn get_all_btree() -> Vec<BtreeValue> {
+    ego_example_mod::memory::get_all_btree()
 }
