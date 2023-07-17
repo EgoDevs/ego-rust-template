@@ -73,3 +73,7 @@ artifacts/**/
 **/pnpm-lock.yaml
 
 topup.sh
+
+# Added by cargo
+
+/target

@@ -1,0 +1,83 @@
+// Use Jest to test
+
+import {idlFactory as exampleIDL, idlFactory as egoIDL} from '@/idls/ego_example.idl';
+import {_SERVICE as exampleService, _SERVICE as egoService} from '@/idls/ego_example';
+import { getCanisterId, getActor, identity } from '@ego-js/utils';
+import {ActorSubclass} from "@dfinity/agent";
+import {Principal} from "@dfinity/principal";
+import crypto, {BinaryLike} from "crypto";
+
+
+describe('ego_example', () => {
+  let exampleActor: ActorSubclass<exampleService>;
+  test('who am i', async () => {
+    exampleActor =
+      // getActor use idl types
+      await getActor<exampleService>(
+        // use credential identity, owner of canister
+        identity(),
+        // use idlFactory from generated file
+        exampleIDL,
+        // get canister ID for 'ego_example', `configs/ego_example.json` is generated
+        getCanisterId('ego_example')!,
+      );
+    const pid = (await exampleActor.whoAmI()).toText();
+
+    expect(pid).toBe(identity().getPrincipal().toText());
+  });
+});
+test('state test', async () => {
+  const actor =
+    // getActor use idl types
+    await getActor<egoService>(
+      // use credential identity, owner of canister
+      identity(),
+      // use idlFactory from generated file
+      egoIDL,
+      // get canister ID for 'ego_deployer', `configs/ego_deployer.json` is generated
+      getCanisterId('ego_example')!,
+    );
+
+  const resutl1 = await actor.ego_canister_list();
+  console.log(resutl1)
+
+  await actor.ego_canister_add("ego_store", Principal.fromText("2222s-4iaaa-aaaaf-ax2uq-cai"));
+
+  const resutl2 = await actor.ego_canister_list();
+  console.log(resutl2)
+});
+
+
+describe('btree test', () => {
+  test('btree test', async () => {
+    const actor =
+      // getActor use idl types
+      await getActor<egoService>(
+        // use credential identity, owner of canister
+        identity(),
+        // use idlFactory from generated file
+        egoIDL,
+        // get canister ID for 'ego_deployer', `configs/ego_deployer.json` is generated
+        getCanisterId('ego_example')!,
+      );
+
+    await actor.insert_user(6, "user_6");
+    await actor.insert_wallet(6, 10);
+
+    await debug_info(actor)
+
+    await actor.insert_user(7, "user_7");
+    await actor.insert_wallet(7, 20);
+
+    await debug_info(actor)
+  });
+});
+
+const debug_info = async (actor: ActorSubclass<exampleService>) => {
+  const result1 = await actor.get_all_users();
+  console.log(result1)
+
+  const result2 = await actor.get_all_wallets();
+  console.log(result2)
+};
+
