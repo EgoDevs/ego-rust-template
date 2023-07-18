@@ -61,7 +61,7 @@ describe('btree test', () => {
         getCanisterId('ego_example')!,
       );
 
-    await actor.insert_user(6, "user_6");
+    await actor.insert_user(6, "user_6_2");
     await actor.insert_wallet(6, 10);
 
     await debug_info(actor)

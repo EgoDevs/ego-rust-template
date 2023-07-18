@@ -98,12 +98,12 @@ impl Example {
         USERS.with(|users| {
             let mut user_borrow_mut = users.borrow_mut();
 
-            if !user_borrow_mut.contains_key(&user_id) {
+            // if !user_borrow_mut.contains_key(&user_id) {
                 user_borrow_mut.insert(user_id, UserProfile {
                     user_id,
                     user_name,
                 });
-            }
+            // }
 
             user_borrow_mut.get(&user_id).unwrap()
         })
