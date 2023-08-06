@@ -10,7 +10,7 @@ use ego_types::app_info::AppInfo;
 use std::collections::BTreeMap;
 
 candid::export_service!();
-// std::print!("{}", __export_service());
+
 #[no_mangle]
 pub fn get_candid_pointer() -> *mut std::os::raw::c_char {
     let c_string = std::ffi::CString::new(__export_service()).unwrap();
