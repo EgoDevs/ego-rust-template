@@ -1,12 +1,12 @@
 // Use Jest to test
 
-import {idlFactory as exampleIDL, idlFactory as egoIDL} from '@/idls/ego_example.idl';
-import {_SERVICE as exampleService, _SERVICE as egoService} from '@/idls/ego_example';
+import { idlFactory as exampleIDL, idlFactory as egoIDL } from '@/idls/ego_example.idl';
+import { _SERVICE as exampleService, _SERVICE as egoService } from '@/idls/ego_example';
 import { getCanisterId, getActor, identity } from '@ego-js/utils';
-import {ActorSubclass} from "@dfinity/agent";
-import {Principal} from "@dfinity/principal";
-import crypto, {BinaryLike} from "crypto";
-
+import { ActorSubclass } from '@dfinity/agent';
+import { Principal } from '@dfinity/principal';
+import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
+import crypto, { BinaryLike } from 'crypto';
 
 describe('ego_example', () => {
   let exampleActor: ActorSubclass<exampleService>;
@@ -22,6 +22,16 @@ describe('ego_example', () => {
         getCanisterId('ego_example')!,
       );
     const pid = (await exampleActor.whoAmI()).toText();
+
+    let id2 = Secp256k1KeyIdentity.generate();
+    let actor2 = await getActor<exampleService>(
+      // use credential identity, owner of canister
+      id2,
+      // use idlFactory from generated file
+      exampleIDL,
+      // get canister ID for 'ego_example', `configs/ego_example.json` is generated
+      getCanisterId('ego_example')!,
+    );
 
     expect(pid).toBe(identity().getPrincipal().toText());
   });
@@ -39,14 +49,13 @@ test('state test', async () => {
     );
 
   const resutl1 = await actor.ego_canister_list();
-  console.log(resutl1)
+  console.log(resutl1);
 
-  await actor.ego_canister_add("ego_store", Principal.fromText("2222s-4iaaa-aaaaf-ax2uq-cai"));
+  await actor.ego_canister_add('ego_store', Principal.fromText('2222s-4iaaa-aaaaf-ax2uq-cai'));
 
   const resutl2 = await actor.ego_canister_list();
-  console.log(resutl2)
+  console.log(resutl2);
 });
-
 
 describe('btree test', () => {
   test('btree test', async () => {
@@ -61,23 +70,22 @@ describe('btree test', () => {
         getCanisterId('ego_example')!,
       );
 
-    await actor.insert_user(6, "user_6_2");
+    await actor.insert_user(6, 'user_6');
     await actor.insert_wallet(6, 10);
 
-    await debug_info(actor)
+    await debug_info(actor);
 
-    await actor.insert_user(7, "user_7");
+    await actor.insert_user(7, 'user_7');
     await actor.insert_wallet(7, 20);
 
-    await debug_info(actor)
+    await debug_info(actor);
   });
 });
 
 const debug_info = async (actor: ActorSubclass<exampleService>) => {
   const result1 = await actor.get_all_users();
-  console.log(result1)
+  console.log(result1);
 
   const result2 = await actor.get_all_wallets();
-  console.log(result2)
+  console.log(result2);
 };
-
