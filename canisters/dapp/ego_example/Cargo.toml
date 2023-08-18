@@ -23,3 +23,7 @@ ego_types =  { workspace = true }
 ego_lib =  { workspace = true }
 ego_macros =  { workspace = true }
 hex =  { workspace = true }
+
+[features]
+default=[]
+debug=[]
