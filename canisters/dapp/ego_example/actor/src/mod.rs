@@ -1,12 +1,14 @@
 pub mod actor;
-pub mod memory;
-pub mod state;
-pub mod types;
 
-use crate::types::*;
+#[allow(unused_imports)]
 use candid::Principal;
+#[allow(unused_imports)]
+use ego_example_mod::types::*;
+#[allow(unused_imports)]
 use ego_types::app::{AppId, Version};
+#[allow(unused_imports)]
 use ego_types::app_info::AppInfo;
+#[allow(unused_imports)]
 use std::collections::BTreeMap;
 
 candid::export_service!();
