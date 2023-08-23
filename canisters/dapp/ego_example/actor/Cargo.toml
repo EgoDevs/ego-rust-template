@@ -6,7 +6,7 @@ edition = "2021"
 
 [lib]
 path = "src/mod.rs"
-crate-type = ["lib"]
+crate-type = ["lib", "cdylib"]
 
 [dependencies]
 async-trait = { workspace = true }
