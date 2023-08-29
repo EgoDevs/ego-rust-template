@@ -7,6 +7,7 @@
     "canisters/dapp/ego_example/actor/src/mod.rs",
     "canisters/dapp/ego_example/mod/Cargo.toml",
     "clients/scripts/console.test.ts",
-    "ego-projects.json"
+    "ego-projects.json",
+    "package.json"
   ]
 }
