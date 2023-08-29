@@ -2,7 +2,7 @@
   {
     "category": "dapp",
     "package": "ego_example",
-    "bin_name": "ego-example",
+    "bin_name": "ego_example",
     "config": "./configs/ego_example.json",
     "post_install_sequence": 100,
     "no_deploy": false,

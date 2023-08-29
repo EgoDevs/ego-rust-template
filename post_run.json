@@ -1,0 +1,12 @@
+{
+  "folders": ["canisters/dapp/ego_example"],
+  "files": [
+    "canisters/Cargo.toml",
+    "canisters/dapp/ego_example/actor/Cargo.toml",
+    "canisters/dapp/ego_example/actor/src/actor.rs",
+    "canisters/dapp/ego_example/actor/src/mod.rs",
+    "canisters/dapp/ego_example/mod/Cargo.toml",
+    "clients/scripts/console.test.ts",
+    "ego-projects.json"
+  ]
+}
