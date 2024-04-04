@@ -10,14 +10,13 @@ const USER_PROFILE_MEM_ID: MemoryId = MemoryId::new(0);
 const USER_WALLET_MEM_ID: MemoryId = MemoryId::new(1);
 const METADATA_PAGES: u64 = 16;
 
-type RM = RestrictedMemory<DefaultMemoryImpl>;
-type VM = VirtualMemory<RM>;
+type VM = VirtualMemory<DefaultMemoryImpl>;
 
 thread_local! {
-    pub static CONFIG: RefCell<StableCell<StableState, RM>> = RefCell::new(StableCell::init(RM::new(DefaultMemoryImpl::default(), 0..METADATA_PAGES), StableState::default()).expect("failed to initialize the config cell"));
+   pub static CONFIG:RefCell<StableState> = RefCell::new(StableState::default());
 
-    static MEMORY_MANAGER: RefCell<MemoryManager<RM>> = RefCell::new(
-        MemoryManager::init(RM::new(DefaultMemoryImpl::default(), METADATA_PAGES..1024))
+    static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(
+        MemoryManager::init(DefaultMemoryImpl::default())
     );
 
     pub static USERS: RefCell<StableBTreeMap<u16, UserProfile, VM>> = MEMORY_MANAGER.with(|mm| {
