@@ -1,5 +1,6 @@
 use ego_macros::{inject_app_info, inject_ego_data};
 use std::cell::RefCell;
+use ic_stable_structures::Memory;
 use crate::types::StableState;
 use crate::memory::CONFIG;
 
@@ -13,7 +14,7 @@ fn on_canister_added(name: &str, canister_id: Principal) {
             "on_canister_added name: {}, canister_id: {}",
             name, canister_id
         )
-        .as_str(),
+            .as_str(),
     );
 }
 
@@ -28,6 +29,8 @@ fn on_canister_added(name: &str, canister_id: Principal) {
 pub fn pre_upgrade() {
     info_log_add("enter example pre_upgrade");
 
+    info_log_add("enter omni_wallet pre_upgrade");
+
     // composite StableState
     let stable_state = StableState {
         users: Some(users_pre_upgrade()),
@@ -35,9 +38,13 @@ pub fn pre_upgrade() {
         app_info: Some(app_info_pre_upgrade()),
     };
 
-    CONFIG.with(|config| {
-        config.borrow_mut().set(stable_state).expect("persist stable state failed");
-    });
+    let mut state_bytes = vec![];
+
+    ciborium::ser::into_writer(&stable_state, &mut state_bytes).expect("failed to serialize state");
+    let len = state_bytes.len() as u32;
+    let memory = crate::memory::get_upgrades_memory();
+    crate::memory::write(&memory, 0, &len.to_le_bytes());
+    crate::memory::write(&memory, 4, &state_bytes);
 
 
 }
@@ -49,29 +56,44 @@ pub fn pre_upgrade() {
 pub fn post_upgrade() {
     info_log_add("enter example post_upgrade");
 
-    CONFIG.with(|config| {
-        let config_borrow = config.borrow();
-        let state =  config_borrow.get();
+    let memory = crate::memory::get_upgrades_memory();
 
-        match &state.users {
-            None => {}
-            Some(users) => {
-                users_post_upgrade(users.clone());
-            }
-        }
+    // Read the length of the state bytes.
+    let mut state_len_bytes = [0; 4];
+    memory.read(0, &mut state_len_bytes);
+    let state_len = u32::from_le_bytes(state_len_bytes) as usize;
 
-        match &state.registry {
-            None => {}
-            Some(registry) => {
-                registry_post_upgrade(registry.clone());
-            }
-        }
+    // Read the bytes
+    let mut state_bytes = vec![0; state_len];
+    memory.read(4, &mut state_bytes);
 
-        match &state.app_info {
-            None => {}
-            Some(app_info) => {
-                app_info_post_upgrade(app_info.clone());
-            }
+    // Deserialize and set the state.
+    let state: StableState =
+        ciborium::de::from_reader(&*state_bytes).expect("failed to decode state");
+
+    // let (state,): (StableState,) =
+    //     ic_cdk::storage::stable_restore().expect("failed to restore stable state");
+    //
+    match state.users {
+        None => {}
+        Some(users) => {
+            users_post_upgrade(users);
         }
-    });
+    }
+
+    match state.registry {
+        None => {}
+        Some(registry) => {
+            registry_post_upgrade(registry);
+        }
+    }
+
+    match state.app_info {
+        None => {}
+        Some(app_info) => {
+            app_info_post_upgrade(app_info);
+        }
+    }
+
+
 }
