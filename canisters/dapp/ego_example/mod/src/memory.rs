@@ -1,6 +1,6 @@
 use ic_stable_structures::{
     memory_manager::{MemoryId, MemoryManager, VirtualMemory},
-    DefaultMemoryImpl, Memory, RestrictedMemory, StableBTreeMap, StableCell,
+    DefaultMemoryImpl, Memory, StableBTreeMap,
 };
 
 use crate::types::*;
@@ -14,6 +14,8 @@ const USER_WALLET_MEM_ID: MemoryId = MemoryId::new(1);
 const UPGRADES: MemoryId = MemoryId::new(3);
 
 const BTREE_ID: MemoryId = MemoryId::new(91);
+
+#[allow(dead_code)]
 const METADATA_PAGES: u64 = 16;
 
 type VM = VirtualMemory<DefaultMemoryImpl>;

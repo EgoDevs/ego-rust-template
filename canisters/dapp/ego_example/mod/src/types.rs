@@ -11,6 +11,7 @@ use ego_types::registry::Registry;
 use ego_types::user::User;
 use itertools::Itertools;
 
+#[allow(dead_code)]
 const MAX_STATE_SIZE: u32 = 2 * 1024 * 1024;
 const MAX_USER_PROFILE_SIZE: u32 = 1 * 1024 * 1024;
 const MAX_USER_WALLET_SIZE: u32 = 1 * 1024 * 1024;
@@ -54,11 +55,11 @@ pub struct UserProfile {
 }
 
 impl Storable for UserProfile {
-    fn to_bytes(&self) -> std::borrow::Cow<[u8]> {
+    fn to_bytes(&self) -> Cow<[u8]> {
         Cow::Owned(Encode!(self).unwrap())
     }
 
-    fn from_bytes(bytes: std::borrow::Cow<[u8]>) -> Self {
+    fn from_bytes(bytes: Cow<[u8]>) -> Self {
         Decode!(bytes.as_ref(), Self).unwrap()
     }
     const BOUND: Bound = Bound::Bounded {
@@ -74,11 +75,11 @@ pub struct UserWallet {
 }
 
 impl Storable for UserWallet {
-    fn to_bytes(&self) -> std::borrow::Cow<[u8]> {
+    fn to_bytes(&self) -> Cow<[u8]> {
         Cow::Owned(Encode!(self).unwrap())
     }
 
-    fn from_bytes(bytes: std::borrow::Cow<[u8]>) -> Self {
+    fn from_bytes(bytes: Cow<[u8]>) -> Self {
         Decode!(bytes.as_ref(), Self).unwrap()
     }
     const BOUND: Bound = Bound::Bounded {
@@ -143,8 +144,8 @@ impl Example {
     }
 }
 
-/// We define a example key with String
-/// because String is expandable, cannot store in stable structure directly
+/// We define an example key with String
+/// because String is expandable, cannot store in stable structure directly,
 /// so we use a struct to wrap it.
 #[derive(CandidType, Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq, Clone)]
 pub struct BtreeKey(pub String);
@@ -166,11 +167,11 @@ impl Storable for BtreeKey {
 
 #[derive(CandidType, Serialize, Deserialize, Clone)]
 pub struct BtreeValue {
-    /// key is expandable
+    /// key is expandable,
     /// but we have to give it a boundary
     /// say 128 bytes
     pub key: String,
-    /// value is expandable
+    /// value is expandable,
     /// but we have to give it a boundary
     /// say 896 bytes
     pub value: Vec<u8>,
@@ -184,7 +185,7 @@ impl Storable for BtreeValue {
             .into()
     }
 
-    // deserialize the btyes to struct
+    // deserialize the bytes to struct
     fn from_bytes(bytes: Cow<[u8]>) -> Self {
         candid::decode_one::<BtreeValue>(bytes.as_ref())
             .expect("Error: Candid DeSerializing BtreeValue")
