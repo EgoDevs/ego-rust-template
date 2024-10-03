@@ -2,27 +2,27 @@
 members = ["dapp/ego_example/actor", "dapp/ego_example/mod"]
 
 [workspace.dependencies]
-candid = "0.9.2"
-ic-cdk = { version = "0.10.0" }
-ic-cdk-timers = "0.4.0"
-ic-cdk-macros = "0.7.1"
-serde = "1.0"
+candid = "0.10.10"
+ic-cdk = { version = "0.16.0" }
+ic-cdk-timers = "0.10.0"
+ic-cdk-macros = "0.16.0"
+serde = "1.0.210"
 serde_json = "1.0"
-serde_bytes = "0.11"
-serde_cbor = "0.11.2"
-ic-ledger-types = "0.7.0"
-ic-stable-structures = "0.6.0"
+serde_bytes = "0.11.15"
+serde_cbor = "1"
+ic-ledger-types = "0.13.0"
+ic-stable-structures = "0.6.5"
 ic-certified-map = "0.4.0"
-ciborium = "0.2.1"
+ciborium = "0.2.2"
 
-ego_types = { git = "https://github.com/EgoDevs/ego", branch = "main" }
-ego_macros = { git = "https://github.com/EgoDevs/ego", branch = "main" }
-ego_lib = { git = "https://github.com/EgoDevs/ego", branch = "main" }
-ego_utils = { git = "https://github.com/EgoDevs/ego", branch = "main" }
-ego_inner_rpc = { git = "https://github.com/EgoDevs/ego", branch = "main" }
+ego_types = { git = "https://github.com/EgoDevs/ego", branch = "update_deps" }
+ego_macros = { git = "https://github.com/EgoDevs/ego", branch = "update_deps" }
+ego_lib = { git = "https://github.com/EgoDevs/ego", branch = "update_deps" }
+ego_utils = { git = "https://github.com/EgoDevs/ego", branch = "update_deps" }
+ego_inner_rpc = { git = "https://github.com/EgoDevs/ego", branch = "update_deps" }
 
 
-async-trait = "0.1.57"
+async-trait = "0.1.83"
 
 md5 = "0.7.0"
 rand = "0.8.5"
@@ -30,11 +30,11 @@ getrandom = { version = "0.2.8", features = ["js"] }
 
 hex = "0.4.3"
 hex-literal = "0.4.1"
-itertools = "0.11.0"
+itertools = "0.13.0"
 
-mockall = "0.11.2"
+mockall = "0.13.0"
 tokio = { version = "1.21.0", features = ["full"] }
-sha2 = "0.10.6"
+sha2 = "0.10.8"
 
 multibase = "0.9.1"
 
